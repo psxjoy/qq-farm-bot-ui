@@ -79,6 +79,9 @@ const localSettings = ref({
   },
 })
 
+const friendDisabled = computed(() => !localSettings.value.automation.friend)
+const farmDisabled = computed(() => !localSettings.value.automation.farm_manage)
+
 const localOffline = ref({
   channel: 'webhook',
   reloginUrlMode: 'none',
@@ -254,7 +257,7 @@ const reloginUrlModeOptions = [
   { label: '不需要', value: 'none' },
   { label: '链接', value: 'qq_link' },
   { label: '二维码', value: 'qr_code' },
-  { label: '二维码+链接', value: 'all' },
+  { label: '二维码 + 链接', value: 'all' },
 ]
 
 const currentChannelDocUrl = computed(() => {
@@ -545,17 +548,17 @@ async function handleTestOffline() {
           </div>
 
           <!-- Sub-controls -->
-          <div v-if="localSettings.automation.farm_manage" class="flex flex-wrap gap-4 rounded bg-emerald-50 p-2 text-sm dark:bg-emerald-900/20">
-            <BaseSwitch v-model="localSettings.automation.farm_water" label="自动浇水" />
-            <BaseSwitch v-model="localSettings.automation.farm_bug" label="自动除虫" />
-            <BaseSwitch v-model="localSettings.automation.farm_weed" label="自动除草" />
+          <div class="flex flex-wrap gap-4 rounded bg-emerald-50 p-2 text-sm dark:bg-emerald-900/20"  :class="{ 'opacity-50 pointer-events-none': farmDisabled }">
+            <BaseSwitch v-model="localSettings.automation.farm_water" label="自动浇水" :disabled="farmDisabled" />
+            <BaseSwitch v-model="localSettings.automation.farm_bug" label="自动除虫" :disabled="farmDisabled" />
+            <BaseSwitch v-model="localSettings.automation.farm_weed" label="自动除草" :disabled="farmDisabled" />
           </div>
 
-          <div v-if="localSettings.automation.friend" class="flex flex-wrap gap-4 rounded bg-blue-50 p-2 text-sm dark:bg-blue-900/20">
-            <BaseSwitch v-model="localSettings.automation.friend_steal" label="自动偷菜" />
-            <BaseSwitch v-model="localSettings.automation.friend_help" label="自动帮忙" />
-            <BaseSwitch v-model="localSettings.automation.friend_bad" label="自动捣乱" />
-            <BaseSwitch v-model="localSettings.automation.friend_help_exp_limit" label="经验上限停止帮忙" />
+          <div class="flex flex-wrap gap-4 rounded bg-blue-50 p-2 text-sm dark:bg-blue-900/20" :class="{ 'opacity-50 pointer-events-none': friendDisabled }">
+            <BaseSwitch v-model="localSettings.automation.friend_steal" label="自动偷菜" :disabled="friendDisabled" />
+            <BaseSwitch v-model="localSettings.automation.friend_help" label="自动帮忙" :disabled="friendDisabled" />
+            <BaseSwitch v-model="localSettings.automation.friend_bad" label="自动捣乱" :disabled="friendDisabled" />
+            <BaseSwitch v-model="localSettings.automation.friend_help_exp_limit" label="经验上限停止帮忙" :disabled="friendDisabled" />
           </div>
 
           <!-- Fertilizer -->
